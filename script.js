@@ -30,7 +30,7 @@ document
   });
 
 function searchChannel(channelName) {
-  // var channelName = document.getElementById("query").value;
+  var channelName = document.getElementById("query").value;
 
   fetch(
     `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${channelName}&type=channel&key=${API_KEY}`
