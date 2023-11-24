@@ -96,6 +96,10 @@ function displayVideos(videos) {
   const container = document.getElementById("video-container");
   container.innerHTML = ""; // Clear previous results
 
+  const firstVideo = videos[0];
+  let backgroundImage = firstVideo.snippet.thumbnails.maxres.url;
+
+  document.body.style.backgroundImage = `url(${backgroundImage})`;
   videos.forEach((video) => {
     console.log(video);
     const videoId = video.id;
