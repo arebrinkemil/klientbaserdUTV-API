@@ -1,4 +1,32 @@
-const API_KEY = "AIzaSyBGoaAhnmGXO2mLUevU1VWGo8FGFiTjabQ ";
+const API_KEY = "AIzaSyBGoaAhnmGXO2mLUevU1VWGo8FGFiTjabQ "; //youtube
+
+let apiKey = "7d0aa209496930d33c0dff82ce1ef7ab"; //lastfm
+let LastFmUrl = `http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=${apiKey}&format=json`;
+
+fetch(LastFmUrl)
+  .then((response) => response.json())
+  .then((data) => {
+    console.log("Top Artists:", data.artists.artist);
+    artistDropDown(data.artists.artist);
+  })
+  .catch((error) => console.error("Error:", error));
+
+function artistDropDown(artists) {
+  let artistDropDown = document.getElementById("artistDropDown");
+  for (let i = 0; i < artists.length; i++) {
+    let option = document.createElement("option");
+    option.value = artists[i].name;
+    option.innerHTML = artists[i].name;
+    artistDropDown.appendChild(option);
+  }
+}
+
+document
+  .getElementById("artistDropDown")
+  .addEventListener("change", function () {
+    var selectedValue = this.value;
+    searchChannel(selectedValue);
+  });
 
 function searchChannel() {
   var channelName = document.getElementById("query").value;
