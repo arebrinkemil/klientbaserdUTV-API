@@ -1,7 +1,7 @@
 const API_KEY = "AIzaSyBGoaAhnmGXO2mLUevU1VWGo8FGFiTjabQ "; //youtube
 
 let apiKey = "7d0aa209496930d33c0dff82ce1ef7ab"; //lastfm
-let LastFmUrl = `http://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=${apiKey}&format=json`;
+let LastFmUrl = `https://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=${apiKey}&format=json`;
 
 fetch(LastFmUrl)
   .then((response) => response.json())
