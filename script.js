@@ -58,7 +58,7 @@ function fetchVideoDetailsAndSort(videoIds) {
       const sortedVideos = data.items.sort(
         (a, b) => b.statistics.viewCount - a.statistics.viewCount
       );
-      displayVideos(sortedVideos.slice(0, 10)); // Displaying top 10 videos
+      displayVideos(sortedVideos.slice(0, 5)); // Displaying top 10 videos
     })
     .catch((error) => console.log(error));
 }
@@ -68,7 +68,8 @@ function displayVideos(videos) {
   container.innerHTML = ""; // Clear previous results
 
   videos.forEach((video) => {
-    const videoId = video.id.videoId;
+    console.log(video);
+    const videoId = video.id;
     const iframe = document.createElement("iframe");
     iframe.src = `https://www.youtube.com/embed/${videoId}`;
     iframe.width = "560";
