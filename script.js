@@ -25,11 +25,12 @@ document
   .getElementById("artistDropDown")
   .addEventListener("change", function () {
     var selectedValue = this.value;
+    console.log(selectedValue);
     searchChannel(selectedValue);
   });
 
-function searchChannel() {
-  var channelName = document.getElementById("query").value;
+function searchChannel(channelName) {
+  // var channelName = document.getElementById("query").value;
 
   fetch(
     `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${channelName}&type=channel&key=${API_KEY}`
