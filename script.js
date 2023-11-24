@@ -87,7 +87,7 @@ function fetchVideoDetailsAndSort(videoIds) {
       const sortedVideos = data.items.sort(
         (a, b) => b.statistics.viewCount - a.statistics.viewCount
       );
-      displayVideos(sortedVideos.slice(0, 5)); // Displaying top 10 videos
+      displayVideos(sortedVideos.slice(0, 12)); // Displaying top 10 videos
     })
     .catch((error) => console.log(error));
 }
