@@ -37,9 +37,7 @@ function searchMusicVideos(query) {
   )
     .then((response) => response.json())
     .then((data) => {
-      // Extract video IDs
       const videoIds = data.items.map((item) => item.id.videoId).join(",");
-      // Fetch video details
       fetchVideoDetails(videoIds);
     })
     .catch((error) => {
@@ -53,12 +51,11 @@ function fetchVideoDetails(videoIds) {
   )
     .then((response) => response.json())
     .then((data) => {
-      // Sort videos by view count
       const sortedVideos = data.items.sort(
         (a, b) => b.statistics.viewCount - a.statistics.viewCount
       );
-      // Display sorted videos
       displayVideos(sortedVideos);
+      console.log(sortedVideos);
     })
     .catch((error) => console.log(error));
 }
@@ -69,7 +66,7 @@ function displayVideos(videos) {
 
   videos.forEach((video) => {
     console.log(video);
-    const videoId = video.id.videoId;
+    const videoId = video.id;
     const iframe = document.createElement("iframe");
     iframe.src = `https://www.youtube.com/embed/${videoId}`;
     iframe.width = "560";
