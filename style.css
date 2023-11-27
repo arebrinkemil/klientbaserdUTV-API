@@ -4,3 +4,9 @@ body {
   background-size: contain;
   background-position: top;
 }
+
+#video-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

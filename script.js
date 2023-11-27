@@ -54,8 +54,9 @@ function fetchVideoDetails(videoIds) {
       const sortedVideos = data.items.sort(
         (a, b) => b.statistics.viewCount - a.statistics.viewCount
       );
-      displayVideos(sortedVideos);
-      console.log(sortedVideos);
+      const slicedArray = sortedVideos.slice(0, 3);
+
+      displayVideos(slicedArray);
     })
     .catch((error) => console.log(error));
 }
