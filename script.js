@@ -37,11 +37,30 @@ function searchMusicVideos(query) {
   )
     .then((response) => response.json())
     .then((data) => {
-      displayVideos(data.items);
+      // Extract video IDs
+      const videoIds = data.items.map((item) => item.id.videoId).join(",");
+      // Fetch video details
+      fetchVideoDetails(videoIds);
     })
     .catch((error) => {
       console.log(error);
     });
+}
+
+function fetchVideoDetails(videoIds) {
+  fetch(
+    `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoIds}&key=${API_KEY}`
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      // Sort videos by view count
+      const sortedVideos = data.items.sort(
+        (a, b) => b.statistics.viewCount - a.statistics.viewCount
+      );
+      // Display sorted videos
+      displayVideos(sortedVideos);
+    })
+    .catch((error) => console.log(error));
 }
 
 function displayVideos(videos) {
