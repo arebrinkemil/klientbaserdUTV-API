@@ -7,17 +7,22 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <input type="text" id="query" />
-    <select name="artists" id="artistDropDown"></select>
+    <input type="text" id="search-input" placeholder="Enter search term" />
+    <button onclick="fetchNews(document.getElementById('search-input').value)">
+      Search
+    </button>
 
-    <p>Search for artist</p>
+    <input type="file" id="image-input" accept="image/*" />
+    <button id="analyze-button" onclick="analyzeImage()">Analyze Image</button>
 
-    <button onclick="searchChannel()">Search</button>
-
-    <p id="demo"></p>
-    <div class="video-segment">
-      <div id="video-container"></div>
+    <div id="clarifai-buttons-container">
+      <!-- Clarifai result buttons will be displayed here -->
     </div>
+
+    <div id="news-container">
+      <!-- Search results will be displayed here -->
+    </div>
+
     <script src="script.js"></script>
   </body>
 </html>

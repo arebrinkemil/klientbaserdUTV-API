@@ -1,82 +1,112 @@
-const API_KEY = "AIzaSyBGoaAhnmGXO2mLUevU1VWGo8FGFiTjabQ "; //youtube
+const PAT = "a7819e512daa4bdbaef6a5a5deb68bf3";
+const USER_ID = "clarifai";
+const APP_ID = "main";
+const MODEL_ID = "general-image-recognition";
+const MODEL_VERSION_ID = "aa7f35c01e0642fda5cf400f543e7c40";
 
-let apiKey = "7d0aa209496930d33c0dff82ce1ef7ab"; //lastfm
-let LastFmUrl = `https://ws.audioscrobbler.com/2.0/?method=chart.gettopartists&api_key=${apiKey}&format=json`;
+function analyzeImage() {
+  const imageInput = document.getElementById("image-input");
 
-fetch(LastFmUrl)
-  .then((response) => response.json())
-  .then((data) => {
-    console.log("Top Artists:", data.artists.artist);
-    artistDropDown(data.artists.artist);
-  })
-  .catch((error) => console.error("Error:", error));
-
-function artistDropDown(artists) {
-  let artistDropDown = document.getElementById("artistDropDown");
-  for (let i = 0; i < artists.length; i++) {
-    let option = document.createElement("option");
-    option.value = artists[i].name;
-    option.innerHTML = artists[i].name;
-    artistDropDown.appendChild(option);
+  if (imageInput.files.length > 0) {
+    const reader = new FileReader();
+    reader.onload = function () {
+      const base64Image = reader.result.replace(
+        /^data:image\/(.*);base64,/,
+        ""
+      );
+      callClarifaiAPI(base64Image);
+    };
+    reader.readAsDataURL(imageInput.files[0]);
   }
 }
 
-document
-  .getElementById("artistDropDown")
-  .addEventListener("change", function () {
-    var selectedValue = this.value;
-    console.log(selectedValue);
-    searchMusicVideos(selectedValue + " music video");
+function callClarifaiAPI(base64Image) {
+  const raw = JSON.stringify({
+    user_app_id: {
+      user_id: USER_ID,
+      app_id: APP_ID,
+    },
+    inputs: [
+      {
+        data: {
+          image: {
+            base64: base64Image,
+          },
+        },
+      },
+    ],
   });
 
-function searchMusicVideos(query) {
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      Authorization: "Key " + PAT,
+    },
+    body: raw,
+  };
+
   fetch(
-    `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(
-      query
-    )}&type=video&maxResults=10&key=${API_KEY}`
+    "https://api.clarifai.com/v2/models/" +
+      MODEL_ID +
+      "/versions/" +
+      MODEL_VERSION_ID +
+      "/outputs",
+    requestOptions
   )
     .then((response) => response.json())
+    .then((result) => handleClarifaiResponse(result))
+    .catch((error) => console.log("error", error));
+}
+
+function handleClarifaiResponse(response) {
+  const concepts = response.outputs[0].data.concepts;
+  const buttonsContainer = document.getElementById(
+    "clarifai-buttons-container"
+  );
+  buttonsContainer.innerHTML = ""; // Clear existing buttons
+
+  concepts.forEach((concept) => {
+    const button = document.createElement("button");
+    button.textContent = concept.name;
+    button.onclick = () => fetchNews(concept.name); // Fetch news when clicked
+    buttonsContainer.appendChild(button);
+  });
+}
+
+function fetchNews(searchTerm) {
+  const apiKey = "d168f91151c24337b5662161b355bcbc"; // Replace with your actual NewsAPI key
+  const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(
+    searchTerm
+  )}&pageSize=5&apiKey=${apiKey}`;
+
+  fetch(url)
+    .then((response) => response.json())
     .then((data) => {
-      const videoIds = data.items.map((item) => item.id.videoId).join(",");
-      fetchVideoDetails(videoIds);
+      displayNews(data.articles);
     })
     .catch((error) => {
-      console.log(error);
+      console.error("Error fetching news:", error);
     });
 }
 
-function fetchVideoDetails(videoIds) {
-  fetch(
-    `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&id=${videoIds}&key=${API_KEY}`
-  )
-    .then((response) => response.json())
-    .then((data) => {
-      const sortedVideos = data.items.sort(
-        (a, b) => b.statistics.viewCount - a.statistics.viewCount
-      );
-      const slicedArray = sortedVideos.slice(0, 3);
+function displayNews(articles) {
+  const newsContainer = document.getElementById("news-container");
+  newsContainer.innerHTML = ""; // Clear existing news
 
-      displayVideos(slicedArray);
-    })
-    .catch((error) => console.log(error));
-}
-
-function displayVideos(videos) {
-  const container = document.getElementById("video-container");
-  container.innerHTML = ""; // Clear previous results
-
-  videos.forEach((video) => {
-    console.log(video);
-    const videoId = video.id;
-    const iframe = document.createElement("iframe");
-    iframe.src = `https://www.youtube.com/embed/${videoId}`;
-    iframe.width = "560";
-    iframe.height = "315";
-    iframe.frameBorder = "0";
-    iframe.allow =
-      "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-    iframe.allowFullscreen = true;
-
-    container.appendChild(iframe);
+  articles.forEach((article) => {
+    const elem = document.createElement("div");
+    let imageHtml = article.urlToImage
+      ? `<img src="${article.urlToImage}" alt="Article Image" style="width:100%;">`
+      : "";
+    elem.innerHTML = `
+          <h3>${article.title}</h3>
+          ${imageHtml}
+          <p>${article.description}</p>
+          <p>${article.content}</p>
+          <p>${article.publishedAt}</p>
+          <a href="${article.url}" target="_blank">Read more</a>
+      `;
+    newsContainer.appendChild(elem);
   });
 }
