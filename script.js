@@ -55,12 +55,80 @@ function callClarifaiAPI(base64Image) {
     requestOptions
   )
     .then((response) => response.json())
-    .then((result) => handleClarifaiResponse(result))
+    .then((result) => {
+      const resultArray = result.outputs[0].data.concepts.slice(0, 5);
+      let resultArrayNames = resultArray.map((item) => item.name);
+      handleClarifaiResponse(resultArrayNames);
+    })
     .catch((error) => console.log("error", error));
 }
 
-function handleClarifaiResponse(response) {
-  const concepts = response.outputs[0].data.concepts;
+function relatedSearch(term) {
+  const PAT = "a7819e512daa4bdbaef6a5a5deb68bf3";
+  const USER_ID = "openai";
+  const APP_ID = "chat-completion";
+
+  const MODEL_ID = "GPT-4";
+  const MODEL_VERSION_ID = "5d7a50b44aec4a01a9c492c5a5fcf387";
+  const RELATED_SEARCH =
+    "can you give me 5 related terms for the term " +
+    term +
+    ". give them in a javascript array format with no comments";
+  const NO_SEARCH =
+    "give me 5 trending news categories. give them in a javascript array format with no comments";
+
+  if (term == "") {
+    var RAW_TEXT = NO_SEARCH;
+  } else {
+    var RAW_TEXT = RELATED_SEARCH;
+  }
+
+  const raw = JSON.stringify({
+    user_app_id: {
+      user_id: USER_ID,
+      app_id: APP_ID,
+    },
+    inputs: [
+      {
+        data: {
+          text: {
+            raw: RAW_TEXT,
+          },
+        },
+      },
+    ],
+  });
+
+  const requestOptions = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      Authorization: "Key " + PAT,
+    },
+    body: raw,
+  };
+
+  fetch(
+    "https://api.clarifai.com/v2/models/" +
+      MODEL_ID +
+      "/versions/" +
+      MODEL_VERSION_ID +
+      "/outputs",
+    requestOptions
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      if (data.status.code != 10000) console.log(data.status);
+      else gptResponse = data["outputs"][0]["data"]["text"]["raw"];
+      let gptArray = JSON.parse(gptResponse);
+      handleClarifaiResponse(gptArray);
+    })
+    .catch((error) => console.log("error", error));
+}
+
+function handleClarifaiResponse(concepts) {
   const buttonsContainer = document.getElementById(
     "clarifai-buttons-container"
   );
@@ -68,8 +136,8 @@ function handleClarifaiResponse(response) {
 
   concepts.forEach((concept) => {
     const button = document.createElement("button");
-    button.textContent = concept.name;
-    button.onclick = () => fetchNews(concept.name); // Fetch news when clicked
+    button.textContent = concept;
+    button.onclick = () => fetchNews(concept); // Fetch news when clicked
     buttonsContainer.appendChild(button);
   });
 }

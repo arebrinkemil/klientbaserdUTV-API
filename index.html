@@ -8,7 +8,9 @@
   </head>
   <body>
     <input type="text" id="search-input" placeholder="Enter search term" />
-    <button onclick="fetchNews(document.getElementById('search-input').value)">
+    <button
+      onclick="fetchNews(document.getElementById('search-input').value); relatedSearch(document.getElementById('search-input').value);"
+    >
       Search
     </button>
 
