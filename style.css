@@ -1,5 +1,244 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: top;
+  height: 100vh;
+  width: 100%;
+  background: linear-gradient(62deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  animation: gradient 15s ease infinite;
+  background-size: 400% 400%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@-webkit-keyframes gradient {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@keyframes gradient {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.header {
+  background-color: #ebecf0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1rem;
+
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
+
+.search-field {
+}
+
+#clarifai-buttons-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+form {
+  padding: 16px;
+  width: 320px; /* 16px * 20 */
+  margin: 0 auto;
+}
+
+.segment {
+  padding: 32px 0; /* 16px * 2 */
+  text-align: center;
+}
+
+button,
+input {
+  border: 0;
+  outline: 0;
+  font-size: 16px;
+  border-radius: 320px; /* 16px * 20 */
+  padding: 16px;
+  background-color: #ebecf0;
+  text-shadow: 1px 1px 0 #fff;
+}
+
+label {
+  display: block;
+  margin-bottom: 24px; /* 16px * 1.5 */
+  width: 100%;
+}
+
+input {
+  margin-right: 8px; /* 16px / 2 */
+  box-shadow: inset 2px 2px 5px #babecc, inset -5px -5px 10px #fff;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+input:focus {
+  box-shadow: inset 1px 1px 2px #babecc, inset -1px -1px 2px #fff;
+}
+
+button {
+  color: #61677c;
+  font-weight: bold;
+  box-shadow: -5px -5px 20px #fff, 5px 5px 20px #babecc;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button:hover {
+  box-shadow: -2px -2px 5px #fff, 2px 2px 5px #babecc;
+}
+
+button:active {
+  box-shadow: inset 1px 1px 2px #babecc, inset -1px -1px 2px #fff;
+}
+
+button .icon {
+  margin-right: 8px; /* 16px / 2 */
+}
+
+button.unit {
+  border-radius: 8px; /* 16px / 2 */
+  line-height: 0;
+  width: 48px; /* 16px * 3 */
+  height: 48px; /* 16px * 3 */
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 8px; /* 16px / 2 */
+  font-size: 19.2px; /* 16px * 1.2 */
+}
+
+.content {
+  height: 80%;
+  width: 90%;
+  border-radius: 25px;
+  background-color: rgba(255, 255, 255, 0.25);
+
+  backdrop-filter: blur(20px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#news-container {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  grid-gap: 10px;
+  padding: 10px;
+  overflow-y: scroll;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,600);
+.article {
+  font-family: "Roboto", Arial, sans-serif;
+  position: relative;
+  border-radius: 25px;
+  margin: 10px;
+  color: #ffffff;
+  text-align: left;
+  line-height: 1.4em;
+  background-color: #1414148f;
+}
+.article * {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: all 0.25s ease;
+  transition: all 0.25s ease;
+}
+.article img {
+  max-width: 100%;
+  vertical-align: top;
+  opacity: 0.85;
+  border-radius: 25px;
+}
+.article .date {
+  position: absolute;
+  background-color: #1e1e1e;
+  top: 0;
+  right: 0;
+  width: 100%;
+  padding: 10px 25px 0;
+  text-align: right;
+  font-size: 0.8em;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+}
+.article .date:before {
+  position: absolute;
+  content: "";
+  top: 100%;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 400px 55px 0;
+  border-color: transparent #1e1e1e transparent transparent;
+}
+.article .article-bread-text {
+  width: 100%;
+  padding: 0 25px 25px;
+  position: relative;
+}
+
+.article .article-bread-text a {
+  padding: 5px;
+  border: 1px solid #ffffff;
+  color: #ffffff;
+  font-size: 0.7em;
+  text-transform: uppercase;
+  text-decoration: none;
+  margin: 10px 0;
+  display: inline-block;
+  opacity: 0.65;
+  width: 47%;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+.article .article-bread-text a:hover {
+  opacity: 1;
+}
+.article h2 {
+  margin: 0 0 10px;
+  font-weight: 300;
+  font-size: 1.5em;
+  line-height: 1.2em;
+}
+.article p {
+  margin: 0 0 10px;
+  font-size: 0.8em;
+  letter-spacing: 1px;
+  opacity: 0.8;
 }

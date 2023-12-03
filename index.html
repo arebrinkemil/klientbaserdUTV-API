@@ -7,22 +7,32 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <input type="text" id="search-input" placeholder="Enter search term" />
-    <button
-      onclick="fetchNews(document.getElementById('search-input').value); relatedSearch(document.getElementById('search-input').value);"
-    >
-      Search
-    </button>
+    <div class="content">
+      <div class="header">
+        <h1>News Search</h1>
+        <div class="search-field">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Enter search term"
+          />
+          <button
+            onclick="fetchNews(document.getElementById('search-input').value); relatedSearch(document.getElementById('search-input').value);"
+          >
+            Search
+          </button>
 
-    <input type="file" id="image-input" accept="image/*" />
-    <button id="analyze-button" onclick="analyzeImage()">Analyze Image</button>
+          <input type="file" id="image-input" accept="image/*" />
+          <button id="analyze-button" onclick="analyzeImage()">
+            Analyze Image
+          </button>
+        </div>
 
-    <div id="clarifai-buttons-container">
-      <!-- Clarifai result buttons will be displayed here -->
-    </div>
-
-    <div id="news-container">
-      <!-- Search results will be displayed here -->
+        <div class="search-buttons">
+          <div id="clarifai-buttons-container"></div>
+        </div>
+      </div>
+      <div id="news-container"></div>
     </div>
 
     <script src="script.js"></script>

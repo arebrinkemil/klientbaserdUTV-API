@@ -1,4 +1,4 @@
-const PAT = "a7819e512daa4bdbaef6a5a5deb68bf3";
+const PAT = "e992377287df4b729fa8135d42c328d1";
 const USER_ID = "clarifai";
 const APP_ID = "main";
 const MODEL_ID = "general-image-recognition";
@@ -64,7 +64,7 @@ function callClarifaiAPI(base64Image) {
 }
 
 function relatedSearch(term) {
-  const PAT = "a7819e512daa4bdbaef6a5a5deb68bf3";
+  const PAT = "e992377287df4b729fa8135d42c328d1";
   const USER_ID = "openai";
   const APP_ID = "chat-completion";
 
@@ -132,18 +132,18 @@ function handleClarifaiResponse(concepts) {
   const buttonsContainer = document.getElementById(
     "clarifai-buttons-container"
   );
-  buttonsContainer.innerHTML = ""; // Clear existing buttons
+  buttonsContainer.innerHTML = ""; // rens
 
   concepts.forEach((concept) => {
     const button = document.createElement("button");
     button.textContent = concept;
-    button.onclick = () => fetchNews(concept); // Fetch news when clicked
+    button.onclick = () => fetchNews(concept);
     buttonsContainer.appendChild(button);
   });
 }
 
 function fetchNews(searchTerm) {
-  const apiKey = "d168f91151c24337b5662161b355bcbc"; // Replace with your actual NewsAPI key
+  const apiKey = "d168f91151c24337b5662161b355bcbc"; // apikey
   const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(
     searchTerm
   )}&pageSize=5&apiKey=${apiKey}`;
@@ -160,21 +160,38 @@ function fetchNews(searchTerm) {
 
 function displayNews(articles) {
   const newsContainer = document.getElementById("news-container");
-  newsContainer.innerHTML = ""; // Clear existing news
+  newsContainer.innerHTML = ""; // rensar
 
   articles.forEach((article) => {
     const elem = document.createElement("div");
+    elem.className = "article";
+
     let imageHtml = article.urlToImage
-      ? `<img src="${article.urlToImage}" alt="Article Image" style="width:100%;">`
+      ? `<img class="article-image" src="${article.urlToImage}" alt="Article Image">`
       : "";
-    elem.innerHTML = `
-          <h3>${article.title}</h3>
-          ${imageHtml}
-          <p>${article.description}</p>
-          <p>${article.content}</p>
-          <p>${article.publishedAt}</p>
-          <a href="${article.url}" target="_blank">Read more</a>
-      `;
+
+    const breadText = document.createElement("div");
+    breadText.className = "article-bread-text";
+    breadText.innerHTML = `
+      <h3 class="article-title">${article.title}</h3>
+      <p class="article-description">${article.description}</p>
+      <a class="article-link" href="${article.url}" target="_blank">Read more</a>
+    `;
+
+    elem.innerHTML = `${imageHtml}<p class="article-date">${article.publishedAt}</p>`;
+    elem.appendChild(breadText);
     newsContainer.appendChild(elem);
   });
 }
+
+/* <p class="article-content">${article.content}</p>
+
+<figure class="snip1347">
+  <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample87.jpg" alt="sample87" />
+  <div class="date">September 14th, 2015</div>
+  <figcaption>
+    <h2>The world ended yesterday</h2>
+    <p>I'm looking for something that can deliver a 50-pound payload of snow on a small feminine target. Can you suggest something? Hello...? </p>
+    <a href="#" class="read-more">Read More</a>
+  </figcaption>
+</figure> */
