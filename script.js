@@ -143,7 +143,7 @@ function handleClarifaiResponse(concepts) {
 }
 
 function fetchNews(searchTerm) {
-  const apiKey = "d168f91151c24337b5662161b355bcbc"; // apikey
+  const apiKey = "73128a72168e4ddeac0aa04e0a033dd3"; // apikey
   const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(
     searchTerm
   )}&pageSize=5&apiKey=${apiKey}`;
