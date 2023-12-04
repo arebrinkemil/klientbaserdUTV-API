@@ -1,4 +1,4 @@
-const PAT = "e992377287df4b729fa8135d42c328d1";
+const PAT = "361aae960c1b4484abb067137d07462c";
 const USER_ID = "clarifai";
 const APP_ID = "main";
 const MODEL_ID = "general-image-recognition";
@@ -64,7 +64,7 @@ function callClarifaiAPI(base64Image) {
 }
 
 function relatedSearch(term) {
-  const PAT = "e992377287df4b729fa8135d42c328d1";
+  const PAT = "361aae960c1b4484abb067137d07462c";
   const USER_ID = "openai";
   const APP_ID = "chat-completion";
 
