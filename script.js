@@ -183,15 +183,3 @@ function displayNews(articles) {
     newsContainer.appendChild(elem);
   });
 }
-
-/* <p class="article-content">${article.content}</p>
-
-<figure class="snip1347">
-  <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sample87.jpg" alt="sample87" />
-  <div class="date">September 14th, 2015</div>
-  <figcaption>
-    <h2>The world ended yesterday</h2>
-    <p>I'm looking for something that can deliver a 50-pound payload of snow on a small feminine target. Can you suggest something? Hello...? </p>
-    <a href="#" class="read-more">Read More</a>
-  </figcaption>
-</figure> */
